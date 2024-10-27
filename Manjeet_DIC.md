@@ -63,8 +63,6 @@
             job1.setOutputKeyClass(Text.class);
             job1.setOutputValueClass(Text.class);
 
-            // Set input/output paths for user data
-
 
             Job job2 = Job.getInstance(conf, "Log Mapper and Reducer");
             job2.setJarByClass(TopPagesDriver.class);
@@ -72,7 +70,6 @@
             job2.setReducerClass(LogReducer.class);
             job2.setOutputKeyClass(Text.class);
             job2.setOutputValueClass(Text.class);
-            // Set input/output paths for log data
     
             System.exit(job1.waitForCompletion(true) ? 0 : 1);
         }
@@ -100,7 +97,6 @@ For a text file with positive integers, calculate the sum of the cubes for:
 The mapper identifies each integer as either `odd`, `even`, or `prime` and emits the integer cubed.
 
 ```java
-// Mapper Class
 public class CubeMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
     private final LongWritable cubeValue = new LongWritable();
     private Text numberType = new Text();
@@ -125,7 +121,7 @@ public class CubeMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
         }
     }
 
-    private boolean isPrime(int n) { ... } // Prime-checking logic
+    private boolean isPrime(int n) { ... } 
 }
 ```
 
@@ -133,7 +129,6 @@ public class CubeMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
 The reducer computes the total sum of cubes for odd, even, and prime integers.
 
 ```java
-// Reducer Class
 public class CubeReducer extends Reducer<Text, LongWritable, Text, LongWritable> {
     @Override
     public void reduce(Text key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
@@ -159,7 +154,6 @@ Create a database in Hive for managing user and group data on a social network.
 ### Hive Table Setup and Queries
 
 ```sql
--- Table creation for users
 CREATE TABLE IF NOT EXISTS users (
     user_id INT,
     name STRING,
@@ -167,14 +161,12 @@ CREATE TABLE IF NOT EXISTS users (
     profession STRING
 ) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
 
--- Table creation for groups
 CREATE TABLE IF NOT EXISTS groups (
     group_id INT,
     group_name STRING,
     group_description STRING
 ) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE;
 
--- Example Queries
 SELECT * FROM users WHERE age BETWEEN 18 AND 26 AND profession = 'student';
 SELECT group_name, COUNT(user_id) AS member_count FROM groups JOIN users ON groups.group_id = users.group_id GROUP BY group_name;
 ```
